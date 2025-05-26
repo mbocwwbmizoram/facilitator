@@ -56,19 +56,47 @@
   </div>
 
   <script>
-    document.getElementById('downloadForm').addEventListener('submit', function (e) {
-      e.preventDefault();
-      const roll = document.getElementById('rollNumber').value.trim();
-      if (roll) {
-        const fileUrl = `${roll}.pdf`; // e.g., 12345.pdf
+ document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('downloadForm');
+  if (!form) {
+    console.error('Form with ID "downloadForm" not found.');
+    return;
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const rollInput = document.getElementById('rollNumber');
+    if (!rollInput) {
+      alert('Input field with ID "rollNumber" not found.');
+      return;
+    }
+
+    const roll = rollInput.value.trim();
+    if (!roll || !/^[a-zA-Z0-9]+$/.test(roll)) {
+      alert('Please enter a valid Roll Number (alphanumeric characters only).');
+      return;
+    }
+
+    const fileUrl = `https://mbocwwbmizoram.github.io/facilitator/${roll}.pdf`;
+    try {
+      // Check if the file exists
+      const response = await fetch(fileUrl, { method: 'HEAD' });
+      if (response.ok) {
         const link = document.createElement('a');
         link.href = fileUrl;
-        link.download = fileUrl;
+        link.download = `${roll}.pdf`; // Set download file name
+        document.body.appendChild(link);
         link.click();
+        document.body.removeChild(link); // Clean up
       } else {
-        alert('Please enter a valid Roll Number.');
+        alert('File not found. Please check the Roll Number and try again.');
       }
-    });
+    } catch (error) {
+      console.error('Error checking file:', error);
+      alert('An error occurred while trying to download the file. Please try again later.');
+    }
+  });
+});
   </script>
 </body>
 </html>
