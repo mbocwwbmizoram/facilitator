@@ -1,430 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Holographic Admit Card Generator</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto+Mono:wght@300;400&display=swap" rel="stylesheet">
-    <!-- Include jsPDF library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Orbitron', sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, #0a0f1f, #1e2a44);
-            color: #e0e0e0;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            overflow-x: hidden; /* Allow vertical scrolling, prevent horizontal */
-            padding-bottom: 2rem; /* Add padding to prevent content cutoff */
-        }
-
-        /* Particle Background */
-        #particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .container {
-            background: rgba(20, 33, 61, 0.9);
-            backdrop-filter: blur(12px);
-            border-radius: 20px;
-            padding: 2.5rem;
-            width: 90%;
-            max-width: 650px;
-            box-shadow: 0 0 40px rgba(0, 255, 255, 0.3), inset 0 0 10px rgba(0, 255, 255, 0.1);
-            position: relative;
-            min-height: 100vh; /* Ensure container takes at least full viewport height */
-            animation: pulse 4s infinite ease-in-out;
-            z-index: 1;
-            margin: 2rem 0; /* Add margin for better spacing */
-        }
-
-        .container::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(0, 255, 255, 0.15), transparent);
-            animation: rotate 15s linear infinite;
-            z-index: -1;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-        }
-
-        @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes scanline {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(100%); }
-        }
-
-        h1 {
-            text-align: center;
-            font-size: 2.5rem;
-            color: #00ffcc;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-bottom: 2rem;
-            text-shadow: 0 0 15px #00ffcc, 0 0 30px #0077b6;
-            position: relative;
-            animation: flicker 2s infinite;
-        }
-
-        @keyframes flicker {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.9; }
-        }
-
-        .form-group {
-            margin-bottom: 2rem;
-            position: relative;
-        }
-
-        label {
-            display: block;
-            font-size: 1.1rem;
-            color: #00ffcc;
-            margin-bottom: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-shadow: 0 0 5px #00ffcc;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid #00ffcc;
-            border-radius: 8px;
-            color: #e0e0e0;
-            font-size: 1.1rem;
-            font-family: 'Roboto Mono', monospace;
-            transition: all 0.4s ease;
-            position: relative;
-            z-index: 1;
-        }
-
-        input[type="text"]:focus {
-            outline: none;
-            box-shadow: 0 0 15px #00ffcc, 0 0 30px #0077b6;
-            background: rgba(255, 255, 255, 0.1);
-            transform: scale(1.02);
-        }
-
-        .btn {
-            display: block;
-            width: 100%;
-            padding: 1rem;
-            background: linear-gradient(90deg, #00ffcc, #0077b6);
-            border: none;
-            border-radius: 8px;
-            color: #0a0f1f;
-            font-size: 1.2rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-        }
-
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 0 25px #00ffcc, 0 0 50px #0077b6;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            transition: 0.5s;
-            z-index: -1;
-        }
-
-        .btn:hover::before {
-            left: 100%;
-        }
-
-        .instructions {
-            margin-top: 2.5rem;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 2rem;
-            border-radius: 12px;
-            border: 1px solid #00ffcc;
-            position: relative;
-            font-family: 'Roboto Mono', monospace;
-            max-height: 400px; /* Limit height for long lists */
-            overflow-y: auto; /* Enable scrolling within instructions */
-        }
-
-        .instructions::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #00ffcc, transparent);
-            animation: scanline 3s infinite linear;
-        }
-
-        .instructions h2 {
-            font-size: 1.3rem;
-            color: #00ffcc;
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-            text-shadow: 0 0 10px #00ffcc;
-        }
-
-        .instructions ol {
-            list-style-type: lower-alpha;
-            padding-left: 1.8rem;
-        }
-
-        .instructions li {
-            margin-bottom: 1rem;
-            font-size: 0.95rem;
-            line-height: 1.5;
-            color: #d0d0d0;
-            position: relative;
-        }
-
-        .instructions li::before {
-            content: '';
-            position: absolute;
-            left: -1.5rem;
-            top: 0.5rem;
-            width: 8px;
-            height: 8px;
-            background: #00ffcc;
-            border-radius: 50%;
-            box-shadow: 0 0 10px #00ffcc;
-        }
-
-        @media (max-width: 600px) {
-            .container {
-                padding: 2rem;
-                width: 95%;
-                min-height: auto; /* Allow container to shrink on smaller screens */
-            }
-
-            h1 {
-                font-size: 1.8rem;
-            }
-
-            .instructions h2 {
-                font-size: 1.1rem;
-            }
-
-            .instructions li {
-                font-size: 0.9rem;
-            }
-
-            .instructions {
-                max-height: 300px; /* Adjust max height for smaller screens */
-            }
-        }
-
-        @media (max-width: 400px) {
-            input[type="text"], .btn {
-                font-size: 1rem;
-                padding: 0.8rem;
-            }
-
-            h1 {
-                font-size: 1.5rem;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Download by Roll Number</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f4f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .form-container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    input[type="text"] {
+      padding: 10px;
+      width: 250px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      margin-bottom: 20px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
 </head>
 <body>
-    <canvas id="particles"></canvas>
-    <div class="container">
-        <h1>Admit Card Generator</h1>
-        <form id="admitCardForm" onsubmit="generateAdmitCard(event)">
-            <div class="form-group">
-                <label for="rollNumber">Roll Number</label>
-                <input type="text" id="rollNumber" name="rollNumber" placeholder="Enter your roll number (e.g., DF01)" required pattern="[A-Za-z0-9]+">
-            </div>
-            <button type="submit" class="btn">Download Admit Card</button>
-        </form>
-        <div class="instructions">
-            <h2>Instructions to Candidates</h2>
-            <ol>
-                <li>Admit Card & ID Proof: Bring this Admit Card and a valid photo ID (Aadhaar or EPIC) to enter the examination hall.</li>
-                <li>Punctuality: Entry will not be allowed if you are more than 10 minutes late after the exam begins.</li>
-                <li>Duplicate Admit Card: Report loss of Admit Card to the Head of Department. A duplicate will be issued with a fee of ₹50.</li>
-                <li>Leaving the Hall: You are not allowed to leave the hall before the exam ends.</li>
-                <li>Items Not Allowed: Do not bring books, notes, loose sheets, mobile phones, smart devices and glasses, calculators, or any such items.</li>
-                <li>Use of Scribe: Only eligible candidates (e.g., visually impaired) may use a scribe. Scribes will be provided by the Department. Inform the Centre Supervisor at least one week in advance. Costs are to be borne by the candidate.</li>
-                <li>Writing Instructions: Use only blue or black ballpoint pens. Pencils may be used only for diagrams or maps.</li>
-                <li>Filling Details: Fill in all required details on your answer sheet accurately. Incomplete or incorrect details may lead to disqualification.</li>
-                <li>Attempting Questions: Follow all instructions on the question paper. Extra questions attempted beyond the allowed number will not be checked.</li>
-                <li>Numbering Answers: Number your answers correctly. Misnumbered answers will not be checked.</li>
-                <li>Requesting Marks: Submit your original or attested Admit Card when applying for marks or results.</li>
-                <li>Unfair Means: Cheating, talking, or bringing banned items will result in immediate disqualification and a ban from future exams.</li>
-                <li>Permission to Leave: You must get permission from the Invigilator before leaving the exam hall.</li>
-            </ol>
-        </div>
-    </div>
+  <div class="form-container">
+    <h2>Download Your File</h2>
+    <form id="downloadForm">
+      <input type="text" id="rollNumber" placeholder="Enter your Roll Number" required />
+      <br />
+      <button type="submit">Download</button>
+    </form>
+  </div>
 
-    <script>
-        // Particle Background
-        const canvas = document.getElementById('particles');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        const particlesArray = [];
-        const numberOfParticles = 100;
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 1;
-                this.speedX = Math.random() * 0.5 - 0.25;
-                this.speedY = Math.random() * 0.5 - 0.25;
-            }
-
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-
-                if (this.size > 0.2) this.size -= 0.01;
-
-                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
-                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
-            }
-
-            draw() {
-                ctx.fillStyle = 'rgba(0, 255, 255, 0.5)';
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        function initParticles() {
-            for (let i = 0; i < numberOfParticles; i++) {
-                particlesArray.push(new Particle());
-            }
-        }
-
-        function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < particlesArray.length; i++) {
-                particlesArray[i].update();
-                particlesArray[i].draw();
-                if (particlesArray[i].size <= 0.2) {
-                    particlesArray.splice(i, 1);
-                    particlesArray.push(new Particle());
-                    i--;
-                }
-            }
-            requestAnimationFrame(animateParticles);
-        }
-
-        initParticles();
-        animateParticles();
-
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
-
-        // Admit Card PDF Generation
-        function generateAdmitCard(event) {
-            event.preventDefault();
-            const rollNumber = document.getElementById('rollNumber').value;
-
-            // Basic validation for roll number format (e.g., DF01)
-            if (!/^[A-Za-z]{2}[0-9]{2}$/.test(rollNumber)) {
-                alert('Roll number must be two letters followed by two digits (e.g., DF01)');
-                return;
-            }
-
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-
-            // Set font and styling
-            doc.setFont('helvetica', 'bold');
-            doc.setFontSize(20);
-            doc.setTextColor(0, 119, 182); // #0077b6
-            doc.text('Admit Card', 105, 20, { align: 'center' });
-
-            // Details section
-            doc.setFont('helvetica', 'normal');
-            doc.setFontSize(12);
-            doc.setTextColor(51, 51, 51); // #333
-            doc.text(`Roll Number: ${rollNumber}`, 20, 40);
-            doc.text('Exam Date: [Insert Date]', 20, 50);
-            doc.text('Exam Center: [Insert Center]', 20, 60);
-
-            // Instructions section
-            doc.setFont('helvetica', 'bold');
-            doc.setFontSize(14);
-            doc.setTextColor(0, 119, 182);
-            doc.text('Instructions to Candidates', 20, 80);
-
-            doc.setFont('helvetica', 'normal');
-            doc.setFontSize(10);
-            const instructions = [
-                'a. Admit Card & ID Proof: Bring this Admit Card and a valid photo ID (Aadhaar or EPIC) to enter the examination hall.',
-                'b. Punctuality: Entry will not be allowed if you are more than 10 minutes late after the exam begins.',
-                'c. Duplicate Admit Card: Report loss of Admit Card to the Head of Department. A duplicate will be issued with a fee of ₹50.',
-                'd. Leaving the Hall: You are not allowed to leave the hall before the exam ends.',
-                'e. Items Not Allowed: Do not bring books, notes, loose sheets, mobile phones, smart devices and glasses, calculators, or any such items.',
-                'f. Use of Scribe: Only eligible candidates (e.g., visually impaired) may use a scribe. Scribes will be provided by the Department. Inform the Centre Supervisor at least one week in advance. Costs are to be borne by the candidate.',
-                'g. Writing Instructions: Use only blue or black ballpoint pens. Pencils may be used only for diagrams or maps.',
-                'h. Filling Details: Fill in all required details on your answer sheet accurately. Incomplete or incorrect details may lead to disqualification.',
-                'i. Attempting Questions: Follow all instructions on the question paper. Extra questions attempted beyond the allowed number will not be checked.',
-                'j. Numbering Answers: Number your answers correctly. Misnumbered answers will not be checked.',
-                'k. Requesting Marks: Submit your original or attested Admit Card when applying for marks or results.',
-                'l. Unfair Means: Cheating, talking, or bringing banned items will result in immediate disqualification and a ban from future exams.',
-                'm. Permission to Leave: You must get permission from the Invigilator before leaving the exam hall.'
-            ];
-
-            let y = 90;
-            instructions.forEach((instruction) => {
-                const splitText = doc.splitTextToSize(instruction, 170);
-                doc.text(splitText, 20, y);
-                y += splitText.length * 5 + 2;
-            });
-
-            // Add border
-            doc.setDrawColor(0, 119, 182);
-            doc.rect(10, 10, 190, y + 10, 'S');
-
-            // Save the PDF with roll number as filename
-            doc.save(`${rollNumber}.pdf`);
-        }
-    </script>
+  <script>
+    document.getElementById('downloadForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const roll = document.getElementById('rollNumber').value.trim();
+      if (roll) {
+        const fileUrl = `${roll}.pdf`; // e.g., 12345.pdf
+        const link = document.createElement('a');
+        link.href = fileUrl;
+        link.download = fileUrl;
+        link.click();
+      } else {
+        alert('Please enter a valid Roll Number.');
+      }
+    });
+  </script>
 </body>
 </html>
