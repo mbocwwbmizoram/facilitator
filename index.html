@@ -1,524 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="cache-control" content="no-cache">
-    <meta http-equiv="expires" content="0">
-    <meta http-equiv="pragma" content="no-cache">
-    <title>Mizoram BOCW Welfare Board</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        body {
-            background: #f0f4f8;
-            color: #333;
-            overflow-x: hidden;
-        }
-
-        header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: linear-gradient(90deg, #003087, #0052cc);
-            padding: 15px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: white;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .nav-menu {
-            display: flex;
-            gap: 30px;
-        }
-
-        .nav-menu a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 1.1rem;
-            transition: color 0.3s, transform 0.3s;
-        }
-
-        .nav-menu a:hover {
-            color: #ff6f61;
-            transform: translateY(-2px);
-        }
-
-        .hamburger {
-            display: none;
-            font-size: 1.8rem;
-            color: white;
-            cursor: pointer;
-            z-index: 1001;
-        }
-
-        .hero {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            background: url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1920') no-repeat center/cover;
-            color: white;
-            position: relative;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 48, 135, 0.7);
-            z-index: 1;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            padding: 20px;
-            max-width: 800px;
-            animation: fadeIn 1.5s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4);
-            line-height: 1.2;
-        }
-
-        .hero p {
-            font-size: 1.3rem;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
-
-        .cta-btn {
-            background: #ff6f61;
-            color: white;
-            padding: 12px 30px;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: background 0.3s, transform 0.3s;
-        }
-
-        .cta-btn:hover {
-            background: #e55a50;
-            transform: scale(1.05);
-        }
-
-        .download-section {
-            padding: 40px 20px;
-            background: #f9f9f9;
-            text-align: center;
-        }
-
-        .download-section h2 {
-            font-size: 2rem;
-            color: #003087;
-            margin-bottom: 20px;
-        }
-
-        .download-form {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        .download-form input {
-            padding: 10px;
-            font-size: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            width: 70%;
-        }
-
-        .download-form button {
-            background: #ff6f61;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .download-form button:hover {
-            background: #e55a50;
-        }
-
-        .services-section {
-            padding: 80px 20px;
-            background: white;
-            text-align: center;
-        }
-
-        .services-section h2 {
-            font-size: 2.8rem;
-            color: #003087;
-            margin-bottom: 50px;
-            position: relative;
-            animation: slideIn 1s ease-in-out;
-        }
-
-        @keyframes slideIn {
-            0% { opacity: 0; transform: translateX(-20px); }
-            100% { opacity: 1; transform: translateX(0); }
-        }
-
-        .services-section h2::after {
-            content: '';
-            width: 100px;
-            height: 5px;
-            background: #ff6f61;
-            position: absolute;
-            bottom: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-radius: 5px;
-        }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .service-card {
-            background: #f9f9f9;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-            transition: transform 0.4s, box-shadow 0.4s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .service-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: #ff6f61;
-            transition: height 0.3s;
-        }
-
-        .service-card:hover::before {
-            height: 10px;
-        }
-
-        .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        }
-
-        .service-card i {
-            font-size: 3rem;
-            color: #ff6f61;
-            margin-bottom: 20px;
-            transition: transform 0.3s;
-        }
-
-        .service-card:hover i {
-            transform: scale(1.1);
-        }
-
-        .service-card h3 {
-            font-size: 1.6rem;
-            color: #003087;
-            margin-bottom: 15px;
-        }
-
-        .service-card p {
-            font-size: 1rem;
-            color: #555;
-            line-height: 1.7;
-        }
-
-        footer {
-            background: #003087;
-            color: white;
-            text-align: center;
-            padding: 30px 20px;
-            font-size: 1rem;
-        }
-
-        footer p {
-            margin-bottom: 10px;
-        }
-
-        footer a {
-            color: #ff6f61;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-
-        /* Mobile Menu Styles */
-        @media (max-width: 768px) {
-            .nav-menu {
-                display: none;
-                flex-direction: column;
-                position: absolute;
-                top: 60px;
-                left: 0;
-                width: 100%;
-                background: #003087;
-                padding: 20px;
-                text-align: center;
-                transition: all 0.3s ease-in-out;
-            }
-
-            .nav-menu.active {
-                display: flex;
-            }
-
-            .nav-menu a {
-                font-size: 1.2rem;
-                padding: 10px 0;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            }
-
-            .hamburger {
-                display: block;
-            }
-
-            .hero h1 {
-                font-size: 2.2rem;
-            }
-
-            .hero p {
-                font-size: 1.1rem;
-            }
-
-            .download-form {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .download-form input {
-                width: 100%;
-                margin-bottom: 10px;
-            }
-
-            .services-section h2 {
-                font-size: 2.2rem;
-            }
-
-            .service-card {
-                padding: 20px;
-            }
-
-            .service-card h3 {
-                font-size: 1.4rem;
-            }
-
-            header {
-                padding: 10px 20px;
-            }
-
-            .logo {
-                font-size: 1.4rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero h1 {
-                font-size: 1.8rem;
-            }
-
-            .hero p {
-                font-size: 1rem;
-            }
-
-            .cta-btn {
-                padding: 10px 20px;
-                font-size: 0.9rem;
-            }
-
-            .download-section h2 {
-                font-size: 1.8rem;
-            }
-
-            .services-section {
-                padding: 50px 15px;
-            }
-
-            .nav-menu a {
-                font-size: 1rem;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Download by Roll Number</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f4f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .form-container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    input[type="text"] {
+      padding: 10px;
+      width: 250px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      margin-bottom: 20px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <div class="logo">Mizoram BOCW Welfare Board</div>
-        <div class="hamburger">☰</div>
-        <nav class="nav-menu">
-            <a href="#about">About Us</a>
-            <a href="#contact">Contact Us</a>
-        </nav>
-    </header>
+  <div class="form-container">
+    <h2>Download Your File</h2>
+    <form id="downloadForm">
+      <input type="text" id="rollNumber" placeholder="Enter your Roll Number" required />
+      <br />
+      <button type="submit">Download</button>
+    </form>
+  </div>
 
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Empowering Construction Workers</h1>
-            <p>We provide financial support, education, and skill development to uplift the lives of construction workers and their families in Mizoram.</p>
-            <a href="#services" class="cta-btn">Explore Our Services</a>
-        </div>
-    </section>
-
-    <section class="download-section">
-        <h2>Download Your Document</h2>
-        <form id="downloadForm" class="download-form">
-            <input type="text" id="rollNumber" placeholder="Enter Roll Number (e.g., DF01)" required>
-            <button type="submit">Download PDF</button>
-        </form>
-    </section>
-
-    <section class="services-section" id="services">
-        <h2>Our Services</h2>
-        <div class="services-grid">
-            <div class="service-card">
-                <i class="fas fa-baby"></i>
-                <h3>Maternity Benefits</h3>
-                <p>Female members receive ₹10,000 for up to two children to support their maternity needs.</p>
-            </div>
-            <div class="service-card">
-                <i class="fas fa-money-check-alt"></i>
-                <h3>Pension Support</h3>
-                <p>Members aged 60+ get ₹1,000 monthly pension. Disabled members may receive up to ₹1,00,000.</p>
-            </div>
-            <div class="service-card">
-                <i class="fas fa-heart-broken"></i>
-                <h3>Death Benefits</h3>
-                <p>Up to ₹3,00,000 for workplace accident deaths, ₹1,00,000 for other causes, and ₹5,000 for funeral expenses.</p>
-            </div>
-            <div class="service-card">
-                <i class="fas fa-ring"></i>
-                <h3>Marriage Assistance</h3>
-                <p>₹10,000 for the first marriage of members or their two children after 3 years of membership.</p>
-            </div>
-            <div class="service-card">
-                <i class="fas fa-hospital"></i>
-                <h3>Medical Support</h3>
-                <p>Up to ₹50,000/year for hospitalization or ₹1,00,000 one-time for chronic illnesses like cancer.</p>
-            </div>
-            <div class="service-card">
-                <i class="fas fa-graduation-cap"></i>
-                <h3>Educational Aid</h3>
-                <p>Up to ₹20,000/year for children’s education, with ₹50,000 for top academic performers.</p>
-            </div>
-            <div class="service-card">
-                <i class="fas fa-tools"></i>
-                <h3>Skill Development</h3>
-                <p>Access to training programs for members and their children to enhance skills and job opportunities.</p>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <p>© 2025 Mizoram Building & Other Construction Workers Welfare Board. All Rights Reserved.</p>
-        <p><a href="#contact">Contact Us</a> | <a href="#about">About Us</a></p>
-    </footer>
-
-    <!-- Font Awesome for icons -->
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    <!-- JavaScript for Hamburger Menu and Form -->
-    <script>
-        // Hamburger Menu Toggle
-        const hamburger = document.querySelector('.hamburger');
-        const navMenu = document.querySelector('.nav-menu');
-
-        hamburger.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-            hamburger.textContent = navMenu.classList.contains('active') ? '✕' : '☰';
-        });
-
-        navMenu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                navMenu.classList.remove('active');
-                hamburger.textContent = '☰';
-            });
-        });
-
-        // Form Submission for PDF Download
-        document.addEventListener('DOMContentLoaded', () => {
-            const form = document.getElementById('downloadForm');
-            if (!form) {
-                console.error('Form with ID "downloadForm" not found.');
-                return;
-            }
-
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const rollInput = document.getElementById('rollNumber');
-                if (!rollInput) {
-                    alert('Input field with ID "rollNumber" not found.');
-                    return;
-                }
-
-                const roll = rollInput.value.trim().toUpperCase();
-                if (!roll || !/^[A-Z0-9]+$/.test(roll)) {
-                    alert('Please enter a valid Roll Number (alphanumeric characters only).');
-                    return;
-                }
-
-                const fileUrl = `https://mbocwwbmizoram.github.io/facilitator/${roll}.pdf`;
-                console.log('Attempting to download:', fileUrl);
-
-                const link = document.createElement('a');
-                link.href = fileUrl;
-                link.download = `${roll}.pdf`;
-
-                link.addEventListener('error', () => {
-                    alert('File not found. Please check the Roll Number and try again.');
-                });
-
-                try {
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                } catch (error) {
-                    console.error('Download error:', error);
-                    alert('An error occurred while trying to download the file. Please try again later.');
-                }
-            });
-        });
-    </script>
+  <script>
+    document.getElementById('downloadForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const roll = document.getElementById('rollNumber').value.trim();
+      if (roll) {
+        const fileUrl = `${roll}.pdf`; // e.g., 12345.pdf
+        const link = document.createElement('a');
+        link.href = fileUrl;
+        link.download = fileUrl;
+        link.click();
+      } else {
+        alert('Please enter a valid Roll Number.');
+      }
+    });
+  </script>
 </body>
 </html>
