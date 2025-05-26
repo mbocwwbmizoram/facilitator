@@ -55,12 +55,13 @@
   <script>
     document.getElementById('downloadForm').addEventListener('submit', function (e) {
       e.preventDefault();
-      const roll = document.getElementById('rollNumber').value.trim();
+      const roll = document.getElementById('rollNumber').value.trim().toUpperCase(); // Convert to uppercase to handle case sensitivity
       if (roll) {
-        const fileUrl = `${roll}.pdf`; // e.g., 12345.pdf
+        // Use the full absolute path to the PDF file
+        const fileUrl = `https://mbocwwbmizoram.github.io/facilitator/${roll}.pdf`;
         const link = document.createElement('a');
         link.href = fileUrl;
-        link.download = fileUrl;
+        link.download = `${roll}.pdf`; // Set the download attribute to the filename
         link.click();
       } else {
         alert('Please enter a valid Roll Number.');
