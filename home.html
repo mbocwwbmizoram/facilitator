@@ -336,14 +336,12 @@
             <a href="BACK.pdf">Download Instruction for Candidate</a>
         </nav>
     </header>
-
     <section class="hero">
         <div class="hero-content">
             <h1>Empowering Construction Workers</h1>
             <p>We provide financial support, education, and skill development to uplift the lives of construction workers and their families in Mizoram.</p>
         </div>
     </section>
-
     <section class="services-section" id="services">
         <h2>Our Services</h2>
         <div class="services-grid">
@@ -384,15 +382,10 @@
             </div>
         </div>
     </section>
-
     <footer>
         <p>© 2025 Mizoram Building & Other Construction Workers Welfare Board. All Rights Reserved.</p>
-        <p><a href="#contact">Contact Us</a> | <a href="#about">About Us</a></p>
     </footer>
-
-    <!-- Font Awesome for icons -->
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    <!-- JavaScript for Hamburger Menu Toggle -->
     <script>
         const hamburger = document.querySelector('.hamburger');
         const navMenu = document.querySelector('.nav-menu');
@@ -401,8 +394,6 @@
             navMenu.classList.toggle('active');
             hamburger.textContent = navMenu.classList.contains('active') ? '✕' : '☰';
         });
-
-        // Close menu when a link is clicked
         navMenu.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 navMenu.classList.remove('active');
